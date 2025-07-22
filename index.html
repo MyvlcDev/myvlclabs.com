@@ -2,56 +2,695 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Tabla de Máquinas de Ciberseguridad</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberLab Solutions</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@300;400;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Source Code Pro', monospace;
+            background: #0a0a0a;
+            color: #00ff41;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+        
+        /* Efecto de matriz de fondo */
+        .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(0, 255, 65, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(0, 200, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(255, 0, 100, 0.1) 0%, transparent 50%);
+        }
+        
+        /* Navigation Menu */
+        nav {
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #333;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .nav-logo {
+            color: #00ff41;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-decoration: none;
+            text-shadow: 0 0 10px #00ff41;
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        .nav-menu a {
+            color: #ccc;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            position: relative;
+        }
+        
+        .nav-menu a:hover {
+            color: #00c8ff;
+            background: rgba(0, 200, 255, 0.1);
+            text-shadow: 0 0 5px #00c8ff;
+        }
+        
+        .nav-menu a.active {
+            color: #00ff41;
+            background: rgba(0, 255, 65, 0.1);
+        }
+        
+        /* Search Bar */
+        .search-container {
+            position: relative;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        .search-bar {
+            background: rgba(0, 20, 20, 0.8);
+            border: 2px solid #333;
+            border-radius: 25px;
+            padding: 1rem 3rem 1rem 1.5rem;
+            font-family: 'Source Code Pro', monospace;
+            font-size: 1rem;
+            color: #00ff41;
+            width: 400px;
+            max-width: 90%;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .search-bar:focus {
+            outline: none;
+            border-color: #00c8ff;
+            box-shadow: 0 0 20px rgba(0, 200, 255, 0.3);
+            background: rgba(0, 30, 30, 0.9);
+        }
+        
+        .search-bar::placeholder {
+            color: #666;
+        }
+        
+        .search-icon {
+            position: absolute;
+            right: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+            font-size: 1.2rem;
+            pointer-events: none;
+        }
+        
+        /* Filter Buttons */
+        .filter-container {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .filter-btn {
+            background: rgba(0, 20, 20, 0.8);
+            border: 1px solid #333;
+            border-radius: 20px;
+            padding: 0.5rem 1rem;
+            color: #ccc;
+            font-family: 'Source Code Pro', monospace;
+            cursor: pointer;
+            margin: 0 0.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .filter-btn:hover {
+            border-color: #00c8ff;
+            color: #00c8ff;
+            background: rgba(0, 200, 255, 0.1);
+        }
+        
+        .filter-btn.active {
+            border-color: #00ff41;
+            color: #00ff41;
+            background: rgba(0, 255, 65, 0.1);
+        }
+        
+        /* Header con efecto glitch */
+        header {
+            text-align: center;
+            padding: 3rem 0;
+            background: linear-gradient(135deg, rgba(0, 255, 65, 0.1), rgba(0, 200, 255, 0.1));
+            border-bottom: 2px solid #00ff41;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 65, 0.2), transparent);
+            animation: scan 3s infinite;
+        }
+        
+        @keyframes scan {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            text-shadow: 0 0 20px #00ff41;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: #00c8ff;
+            text-shadow: 0 0 10px #00c8ff;
+        }
+        
+        /* Contenedor principal de 3 columnas */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 3rem;
+        }
+        
+        /* Estilo de las tarjetas */
+        .lab-card {
+            background: rgba(0, 20, 20, 0.8);
+            border: 1px solid #00ff41;
+            border-radius: 10px;
+            padding: 2rem;
+            position: relative;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .lab-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #ff0040, #00ff41, #00c8ff);
+            border-radius: 10px 10px 0 0;
+        }
+        
+        .lab-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 255, 65, 0.3);
+            border-color: #00c8ff;
+        }
+        
+        .lab-card h2 {
+            color: #00c8ff;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            text-shadow: 0 0 10px #00c8ff;
+        }
+        
+        .lab-item {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid #333;
+            border-radius: 5px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .lab-item:hover {
+            border-color: #00ff41;
+            background: rgba(0, 255, 65, 0.1);
+            transform: translateX(5px);
+        }
+        
+        .lab-title {
+            color: #ffffff;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .lab-difficulty {
+            font-size: 0.9rem;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            display: inline-block;
+            margin-bottom: 0.5rem;
+        }
+        
+        .easy { background: rgba(0, 255, 65, 0.2); color: #00ff41; }
+        .medium { background: rgba(255, 165, 0, 0.2); color: #ffa500; }
+        .hard { background: rgba(255, 0, 64, 0.2); color: #ff0040; }
+        
+        .lab-description {
+            color: #ccc;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+        
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            border-top: 1px solid #333;
+            background: rgba(0, 0, 0, 0.8);
+        }
+        
+        .terminal-prompt {
+            color: #00ff41;
+            font-size: 0.9rem;
+        }
+        
+        /* Hidden class for search functionality */
+        .hidden {
+            display: none !important;
+        }
+        
+        /* No results message */
+        .no-results {
+            text-align: center;
+            color: #666;
+            font-style: italic;
+            grid-column: 1 / -1;
+            padding: 2rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .container {
+                grid-template-columns: 1fr 1fr;
+                gap: 2rem;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .nav-menu {
+                gap: 1rem;
+            }
+            
+            .search-bar {
+                width: 300px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+                padding: 2rem 1rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .lab-card {
+                padding: 1.5rem;
+            }
+            
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav-menu {
+                gap: 0.5rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .search-bar {
+                width: 280px;
+            }
+            
+            .filter-container {
+                margin-bottom: 1rem;
+            }
+        }
+        
+        /* Efectos adicionales */
+        .glitch {
+            animation: glitch 2s infinite;
+        }
+        
+        @keyframes glitch {
+            0%, 90%, 100% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <img src="https://cdn.pixabay.com/photo/2017/01/10/19/05/hacker-1976010_1280.jpg" alt="Ciberseguridad" id="cyber-img">
-        <h1><span class="titulo-blanco">Máquinas</span> <span class="titulo-verde">Ciberseguridad</span></h1>
-    </header>
-    <main>
-        <div class="buscador-wrapper">
-            <input type="text" id="buscador" placeholder="Buscar máquina, plataforma, dificultad...">
+    <div class="matrix-bg"></div>
+    
+    <!-- Navigation Menu -->
+    <nav>
+        <div class="nav-container">
+            <a href="#" class="nav-logo">⚡ CyberLab</a>
+            <ul class="nav-menu">
+                <li><a href="#" class="active">Laboratorios</a></li>
+                <li><a href="#">Writeups</a></li>
+                <li><a href="#">Herramientas</a></li>
+                <li><a href="#">CTF</a></li>
+                <li><a href="#">Academia</a></li>
+                <li><a href="#">Contacto</a></li>
+            </ul>
         </div>
-        <table id="tabla-maquinas">
-            <thead>
-                <tr>
-                    <th class="titulo-verde">Máquina</th>
-                    <th class="titulo-blanco">Plataforma</th>
-                    <th class="titulo-blanco">Dificultad</th>
-                    <th class="titulo-blanco">URL</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>HTB - Blue</td>
-                    <td>Windows</td>
-                    <td>Fácil</td>
-                    <td><a href="https://www.hackthebox.com/machines/Blue" target="_blank">Ir</a></td>
-                </tr>
-                <tr>
-                    <td>TryHackMe - RootMe</td>
-                    <td>Linux</td>
-                    <td>Fácil</td>
-                    <td><a href="https://tryhackme.com/room/rootme" target="_blank">Ir</a></td>
-                </tr>
-                <tr>
-                    <td>HTB - Optimum</td>
-                    <td>Windows</td>
-                    <td>Media</td>
-                    <td><a href="https://www.hackthebox.com/machines/Optimum" target="_blank">Ir</a></td>
-                </tr>
-                <tr>
-                    <td>TryHackMe - Ignite</td>
-                    <td>Linux</td>
-                    <td>Media</td>
-                    <td><a href="https://tryhackme.com/room/ignite" target="_blank">Ir</a></td>
-                </tr>
-            </tbody>
-        </table>
-    </main>
-    <script src="script.js"></script>
+    </nav>
+    
+    <header>
+        <h1 class="glitch">CyberLab Solutions</h1>
+        <p class="subtitle">// Resolución de Laboratorios de Ciberseguridad //</p>
+    </header>
+    
+    <!-- Search and Filter Section -->
+    <div style="max-width: 1400px; margin: 0 auto; padding: 2rem;">
+        <div class="search-container">
+            <input type="text" class="search-bar" id="searchBar" placeholder="Buscar laboratorios... (ej: web, network, malware)">
+            <span class="search-icon">🔍</span>
+        </div>
+        
+        <div class="filter-container">
+            <button class="filter-btn active" data-filter="all">Todos</button>
+            <button class="filter-btn" data-filter="easy">Fácil</button>
+            <button class="filter-btn" data-filter="medium">Medio</button>
+            <button class="filter-btn" data-filter="hard">Difícil</button>
+            <button class="filter-btn" data-filter="pentesting">Pentesting</button>
+            <button class="filter-btn" data-filter="forensics">Forense</button>
+            <button class="filter-btn" data-filter="blueteam">Blue Team</button>
+        </div>
+    </div>
+    
+    <div class="container" id="labContainer">
+        <!-- Columna 1: Pentesting -->
+        <div class="lab-card" data-category="pentesting">
+            <h2>🔍 PENTESTING</h2>
+            
+            <div class="lab-item" data-difficulty="easy" data-keywords="web application owasp injection xss csrf">
+                <div class="lab-title">Web Application Security</div>
+                <div class="lab-difficulty easy">EASY</div>
+                <div class="lab-description">
+                    Análisis de vulnerabilidades OWASP Top 10. Injection attacks, XSS, CSRF y autenticación débil.
+                </div>
+            </div>
+            
+            <div class="lab-item" data-difficulty="medium" data-keywords="network penetration ports scanning nmap">
+                <div class="lab-title">Network Penetration Testing</div>
+                <div class="lab-difficulty medium">MEDIUM</div>
+                <div class="lab-description">
+                    Escaneo de puertos, enumeración de servicios, explotación de vulnerabilidades de red.
+                </div>
+            </div>
+            
+            <div class="lab-item" data-difficulty="hard" data-keywords="active directory kerberos golden ticket windows">
+                <div class="lab-title">Active Directory Exploitation</div>
+                <div class="lab-difficulty hard">HARD</div>
+                <div class="lab-description">
+                    Kerberoasting, Golden Ticket attacks, escalada de privilegios en entornos Windows.
+                </div>
+            </div>
+            
+            <div class="lab-item" data-difficulty="medium" data-keywords="mobile android ios app security">
+                <div class="lab-title">Mobile App Security</div>
+                <div class="lab-difficulty medium">MEDIUM</div>
+                <div class="lab-description">
+                    Análisis estático y dinámico de aplicaciones Android/iOS, bypass de protecciones.
+                </div>
+            </div>
+        </div>
+        
+        <!-- Columna 2: Forense Digital -->
+        <div class="lab-card" data-category="forensics">
+            <h2>🔬 FORENSE DIGITAL</h2>
+            
+            <div class="lab-item" data-difficulty="medium" data-keywords="memory dump volatility malware analysis">
+                <div class="lab-title">Memory Dump Analysis</div>
+                <div class="lab-difficulty medium">MEDIUM</div>
+                <div class="lab-description">
+                    Análisis de volcados de memoria con Volatility. Detección de malware y artefactos.
+                </div>
+            </div>
+            
+            <div class="lab-item" data-difficulty="easy" data-keywords="network forensics wireshark pcap traffic">
+                <div class="lab-title">Network Forensics</div>
+                <div class="lab-difficulty easy">EASY</div>
+                <div class="lab-description">
+                    Análisis de tráfico de red con Wireshark. Reconstrucción de ataques y exfiltración.
+                </div>
+            </div>
+            
+            <div class="lab-item" data-difficulty="hard" data-keywords="disk forensics filesystem recovery timeline">
+                <div class="lab-title">Disk Forensics</div>
+                <div class="lab-difficulty hard">HARD</div>
+                <div class="lab-description">
+                    Recuperación de datos eliminados, análisis de filesystems, timeline reconstruction.
+                </div>
+            </div>
+            
+            <div class="lab-item" data-difficulty="hard" data-keywords="malware reverse engineering static dynamic">
+                <div class="lab-title">Malware Analysis</div>
+                <div class="lab-difficulty hard">HARD</div>
+                <div class="lab-description">
+                    Reverse engineering, análisis estático/dinámico, detección de técnicas anti-análisis.
+                </div>
+            </div>
+        </div>
+        
+        <!-- Columna 3: Blue Team -->
+        <div class="lab-card" data-category="blueteam">
+            <h2>🛡️ BLUE TEAM</h2>
+            
+            <div class="lab-item" data-difficulty="medium" data-keywords="siem splunk elk stack detection rules">
+                <div class="lab-title">SIEM Implementation</div>
+                <div class="lab-difficulty medium">MEDIUM</div>
+                <div class="lab-description">
+                    Configuración de Splunk/ELK Stack, creación de reglas de detección y alertas.
+                </div>
+            </div>
+            
+            <div class="lab-item" data-difficulty="easy" data-keywords="incident response containment eradication recovery">
+                <div class="lab-title">Incident Response</div>
+                <div class="lab-difficulty easy">EASY</div>
+                <div class="lab-description">
+                    Metodología de respuesta a incidentes, containment, eradication y recovery.
+                </div>
+            </div>
+            
+            <div class="lab-item" data-difficulty="hard" data-keywords="threat hunting iocs intelligence proactive">
+                <div class="lab-title">Threat Hunting</div>
+                <div class="lab-difficulty hard">HARD</div>
+                <div class="lab-description">
+                    Búsqueda proactiva de amenazas, análisis de IoCs, threat intelligence integration.
+                </div>
+            </div>
+            
+            <div class="lab-item" data-difficulty="medium" data-keywords="security monitoring baseline anomaly detection">
+                <div class="lab-title">Security Monitoring</div>
+                <div class="lab-difficulty medium">MEDIUM</div>
+                <div class="lab-description">
+                    Monitoreo continuo, baseline establishment, anomaly detection y tuning de alertas.
+                </div>
+            </div>
+        </div>
+        
+        <!-- No results message (hidden by default) -->
+        <div class="no-results hidden" id="noResults">
+            <h3>🔍 No se encontraron laboratorios</h3>
+            <p>Intenta con otros términos de búsqueda o filtros diferentes</p>
+        </div>
+    </div>
+    
+    <footer>
+        <p class="terminal-prompt">root@cyberlab:~$ ./resolve_lab.sh --help</p>
+        <p style="color: #666; margin-top: 1rem;">© 2025 CyberLab Solutions | Ethical Hacking & Digital Forensics</p>
+    </footer>
+    
+    <script>
+        // Efecto de typing en el título
+        const title = document.querySelector('h1');
+        const originalText = title.textContent;
+        title.textContent = '';
+        
+        let i = 0;
+        const typeWriter = () => {
+            if (i < originalText.length) {
+                title.textContent += originalText.charAt(i);
+                i++;
+                setTimeout(typeWriter, 100);
+            }
+        };
+        
+        setTimeout(typeWriter, 500);
+        
+        // Search functionality
+        const searchBar = document.getElementById('searchBar');
+        const labContainer = document.getElementById('labContainer');
+        const noResults = document.getElementById('noResults');
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        
+        let currentFilter = 'all';
+        
+        // Search function
+        function searchLabs() {
+            const searchTerm = searchBar.value.toLowerCase();
+            const labItems = document.querySelectorAll('.lab-item');
+            const labCards = document.querySelectorAll('.lab-card');
+            let visibleItems = 0;
+            
+            // Hide all cards first
+            labCards.forEach(card => {
+                card.style.display = 'none';
+                let cardHasVisible = false;
+                
+                const items = card.querySelectorAll('.lab-item');
+                items.forEach(item => {
+                    const title = item.querySelector('.lab-title').textContent.toLowerCase();
+                    const description = item.querySelector('.lab-description').textContent.toLowerCase();
+                    const keywords = item.dataset.keywords.toLowerCase();
+                    const difficulty = item.dataset.difficulty;
+                    const cardCategory = card.dataset.category;
+                    
+                    // Check if item matches search and filter
+                    const matchesSearch = title.includes(searchTerm) || 
+                                        description.includes(searchTerm) || 
+                                        keywords.includes(searchTerm);
+                    
+                    const matchesFilter = currentFilter === 'all' || 
+                                        difficulty === currentFilter || 
+                                        cardCategory === currentFilter;
+                    
+                    if (matchesSearch && matchesFilter) {
+                        item.style.display = 'block';
+                        cardHasVisible = true;
+                        visibleItems++;
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+                
+                // Show card if it has visible items
+                if (cardHasVisible) {
+                    card.style.display = 'block';
+                }
+            });
+            
+            // Show/hide no results message
+            if (visibleItems === 0) {
+                noResults.classList.remove('hidden');
+            } else {
+                noResults.classList.add('hidden');
+            }
+        }
+        
+        // Filter functionality
+        filterButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                // Update active filter button
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Update current filter
+                currentFilter = this.dataset.filter;
+                
+                // Apply search with new filter
+                searchLabs();
+            });
+        });
+        
+        // Search event listeners
+        searchBar.addEventListener('input', searchLabs);
+        searchBar.addEventListener('keyup', function(e) {
+            if (e.key === 'Enter') {
+                searchLabs();
+            }
+        });
+        
+        // Hover effects en las tarjetas
+        document.querySelectorAll('.lab-item').forEach(item => {
+            item.addEventListener('mouseenter', function() {
+                this.style.boxShadow = '0 0 15px rgba(0, 255, 65, 0.3)';
+            });
+            
+            item.addEventListener('mouseleave', function() {
+                this.style.boxShadow = 'none';
+            });
+        });
+        
+        // Click effect
+        document.querySelectorAll('.lab-item').forEach(item => {
+            item.addEventListener('click', function() {
+                this.style.transform = 'scale(0.98)';
+                setTimeout(() => {
+                    this.style.transform = 'translateX(5px)';
+                }, 150);
+                
+                // Simulate opening lab (you can replace this with actual navigation)
+                const labTitle = this.querySelector('.lab-title').textContent;
+                console.log('Opening lab:', labTitle);
+                // Here you could navigate to the lab page or show more details
+            });
+        });
+        
+        // Navigation menu interaction
+        document.querySelectorAll('.nav-menu a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Update active nav item
+                document.querySelectorAll('.nav-menu a').forEach(a => a.classList.remove('active'));
+                this.classList.add('active');
+                
+                // You can add navigation logic here
+                console.log('Navigating to:', this.textContent);
+            });
+        });
+        
+        // Initial search to show all items
+        searchLabs();
+    </script>
 </body>
 </html>
